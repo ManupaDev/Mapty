@@ -13,6 +13,50 @@ const inputElevation = document.querySelector('.form__input--elevation');
 let map;
 let mapEvent;
 
+class App {
+  constructor() {}
+
+  _getPosition() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this._loadMap, function () {
+        alert('Could not get your location!');
+      });
+    }
+  }
+
+  _loadMap(position) {
+    //console.log(position);
+    const { latitude } = position.coords;
+    const { longitude } = position.coords;
+    console.log(latitude, longitude);
+    console.log(`https://www.google.pt/maps/@${latitude},${longitude}`);
+
+    const ourcoords = [latitude, longitude];
+    map = L.map('map').setView(ourcoords, 13); //setView(focused-coordinate, zoomlevel)
+    //L is a global valiable inside the leaflet library, so we can access it.
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    map.on('click', function (mapE) {
+      //Handling clicks on map.
+      form.classList.remove('hidden');
+      inputDistance.focus();
+      mapEvent = mapE;
+    });
+  }
+
+  _showForm() {}
+
+  _toggleElevationField() {}
+
+  _newWorkout() {}
+}
+
+const app = new App();
+app._getPosition();
+
 /* Basic Map Display at current location setup
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
@@ -89,7 +133,7 @@ if (navigator.geolocation) {
   );
 }*/
 
-/* Final prototype before restructuring
+/* Initial prototype before restructuring
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
     function (position) {
