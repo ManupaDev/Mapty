@@ -14,7 +14,9 @@ let map;
 let mapEvent;
 
 class App {
-  constructor() {}
+  constructor() {
+    this._getPosition();
+  }
 
   _getPosition() {
     if (navigator.geolocation) {
@@ -46,10 +48,10 @@ class App {
       mapEvent = mapE;
     });
 
-    L.marker(ourcoords)
-      .addTo(map)
-      .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-      .openPopup();
+    // L.marker(ourcoords)
+    //   .addTo(map)
+    //   .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+    //   .openPopup();
   }
 
   _showForm() {}
@@ -60,7 +62,7 @@ class App {
 }
 
 const app = new App();
-app._getPosition();
+
 
 /* Basic Map Display at current location setup
 if (navigator.geolocation) {
