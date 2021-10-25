@@ -21,7 +21,7 @@ if (navigator.geolocation) {
       console.log(`https://www.google.pt/maps/@${latitude},${longitude}`);
       
       const ourcoords = [latitude, longitude];
-      const map = L.map('map').setView(ourcoords, 17);   //setView(center-coordinate, zoomlevel)  
+      const map = L.map('map').setView(ourcoords, 8);   //setView(center-coordinate, zoomlevel)  
       //L is a global valiable inside the leaflet library, so we can access it.  
       L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         attribution:
