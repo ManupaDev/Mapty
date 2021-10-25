@@ -97,10 +97,10 @@ if (navigator.geolocation) {
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
 
-      L.marker(ourcoords)
+      /*L.marker(ourcoords)
         .addTo(map)
         .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-        .openPopup();
+        .openPopup();*/
 
       map.on('click', function (mapEvent) {
         console.log(mapEvent); //Returns the event object.
