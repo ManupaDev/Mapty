@@ -16,16 +16,29 @@ const inputElevation = document.querySelector('.form__input--elevation');
 class App {
   #map;
   #mapEvent;
-    
+
   constructor() {
     this._getPosition();
+
+    form.addEventListener('submit', this._newWorkout.bind(this)); //point the  "this" to app object.
+
+    inputType.addEventListener('change', function () {
+      inputElevation
+        .closest('.form__row')
+        .classList.toggle('form__row--hidden');
+      inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+    });
   }
 
   _getPosition() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this._loadMap.bind(this), function () { //the "this" keyword in bind refers to the current instance, first this keyword is undefined as it's treated as a normal function call.
-        alert('Could not get your location!');
-      });
+      navigator.geolocation.getCurrentPosition(
+        this._loadMap.bind(this),
+        function () {
+          //the "this" keyword in bind refers to the current instance, first this keyword is undefined as it's treated as a normal function call.
+          alert('Could not get your location!');
+        }
+      );
     }
   }
 
@@ -44,12 +57,7 @@ class App {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.#map);
 
-    this.#map.on('click', function (mapE) {
-      //Handling clicks on map.
-      this.#mapEvent = mapE;
-      form.classList.remove('hidden');
-      inputDistance.focus();
-    });
+    this.#map.on('click', this._showForm.bind(this));
 
     // L.marker(ourcoords)
     //   .addTo(map)
@@ -57,11 +65,41 @@ class App {
     //   .openPopup();
   }
 
-  _showForm() {}
+  _showForm(mapE) {
+    //Handling clicks on map.
+    this.#mapEvent = mapE;
+    form.classList.remove('hidden');
+    inputDistance.focus();
+  }
 
   _toggleElevationField() {}
 
-  _newWorkout() {}
+  _newWorkout(e) {
+    e.preventDefault(); //prevent page reloading just after rendering the marker when the form is submitted.
+
+    //Clear input fields.
+    inputDistance.value =
+      inputDuration.value =
+      inputElevation.value =
+      inputCadence.value =
+        '';
+
+    //Display the marker.
+    console.log(this.#mapEvent); //Returns the event object.
+    const { lat, lng } = this.#mapEvent.latlng; //latitude and longitude valuess are inside the latlng child obj.
+    //adding a marker.
+    L.marker([lat, lng])
+      .addTo(this.#map)
+      .bindPopup({
+        maxWidth: 250,
+        minWidth: 100,
+        autoClose: false,
+        closeOnClick: false,
+        className: 'running-popup',
+      })
+      .setPopupContent('Workout')
+      .openPopup();
+  }
 }
 
 const app = new App();
