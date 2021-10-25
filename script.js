@@ -72,6 +72,13 @@ if (navigator.geolocation) {
         .addTo(map)
         .bindPopup('Workout')
         .openPopup();
+
+        // CUSTOMIZING 
+        //adding a marker.
+        //.marker([lat, lng], {<option-object-properties})
+        //.bindPopup({option-object-properties})
+        //.setPopupContent(<string|HTMLElement>)
+        L.marker([lat, lng]).addTo(map).bindPopup({maxWidth: 250, minWidth: 100, autoClose: false, closeOnClick: false, className: "running-popup"}).setPopupContent('Workout').openPopup();
       });  
     },
     function () {
@@ -103,14 +110,16 @@ if (navigator.geolocation) {
         .openPopup();*/
 
       map.on('click', function (mapEvent) {
-        console.log(mapEvent); //Returns the event object.
-        const { lat, lng } = mapEvent.latlng; //latitude and longitude valuess are inside the latlng child obj.
+        //console.log(mapEvent); //Returns the event object.
+        //const { lat, lng } = mapEvent.latlng; //latitude and longitude valuess are inside the latlng child obj.
 
         //adding a marker.
         //.marker([lat, lng], {<option-object-properties})
         //.bindPopup({option-object-properties})
-        L.marker([lat, lng]).addTo(map).bindPopup({maxWidth: 250, minWidth: 100, autoClose: false, closeOnClick: false, className: "running-popup"}).setPopupContent('Workout').openPopup();
-      });
+        //.setPopupContent(<string|HTMLElement>)
+        //L.marker([lat, lng]).addTo(map).bindPopup({maxWidth: 250, minWidth: 100, autoClose: false, closeOnClick: false, className: "running-popup"}).setPopupContent('Workout').openPopup();
+        form.classList.remove('hidden');
+    });
     },
     function () {
       alert('Could not get your location!');
