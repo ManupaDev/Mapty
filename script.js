@@ -10,8 +10,7 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
-// let map;
-// let mapEvent;
+
 
 class App {
   #map;
@@ -19,15 +18,8 @@ class App {
 
   constructor() {
     this._getPosition();
-
     form.addEventListener('submit', this._newWorkout.bind(this)); //point the  "this" to app object.
-
-    inputType.addEventListener('change', function () {
-      inputElevation
-        .closest('.form__row')
-        .classList.toggle('form__row--hidden');
-      inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
-    });
+    inputType.addEventListener('change', this._toggleElevationField);
   }
 
   _getPosition() {
@@ -35,7 +27,7 @@ class App {
       navigator.geolocation.getCurrentPosition(
         this._loadMap.bind(this),
         function () {
-          //the "this" keyword in bind refers to the current instance, first this keyword is undefined as it's treated as a normal function call.
+          //the "this" keyword in bind refers to the current instance, this keyword when used inside the callback is undefined as it's treated as a normal function call in the event listener.
           alert('Could not get your location!');
         }
       );
@@ -72,7 +64,12 @@ class App {
     inputDistance.focus();
   }
 
-  _toggleElevationField() {}
+  _toggleElevationField() {
+    inputElevation
+    .closest('.form__row')
+    .classList.toggle('form__row--hidden');
+    inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+  }
 
   _newWorkout(e) {
     e.preventDefault(); //prevent page reloading just after rendering the marker when the form is submitted.
