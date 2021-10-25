@@ -45,6 +45,11 @@ class App {
       inputDistance.focus();
       mapEvent = mapE;
     });
+
+    L.marker(ourcoords)
+      .addTo(map)
+      .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+      .openPopup();
   }
 
   _showForm() {}
