@@ -10,6 +10,8 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
+let map;
+let mapEvent;
 
 /* Basic Map Display at current location setup
 if (navigator.geolocation) {
@@ -97,7 +99,7 @@ if (navigator.geolocation) {
       console.log(`https://www.google.pt/maps/@${latitude},${longitude}`);
 
       const ourcoords = [latitude, longitude];
-      const map = L.map('map').setView(ourcoords, 13); //setView(focused-coordinate, zoomlevel)
+      map = L.map('map').setView(ourcoords, 13); //setView(focused-coordinate, zoomlevel)
       //L is a global valiable inside the leaflet library, so we can access it.
       L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         attribution:
@@ -109,7 +111,7 @@ if (navigator.geolocation) {
         .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
         .openPopup();*/
 
-      map.on('click', function (mapEvent) {
+      map.on('click', function (mapE) {//Handling clicks on map.
         //console.log(mapEvent); //Returns the event object.
         //const { lat, lng } = mapEvent.latlng; //latitude and longitude valuess are inside the latlng child obj.
 
@@ -119,6 +121,8 @@ if (navigator.geolocation) {
         //.setPopupContent(<string|HTMLElement>)
         //L.marker([lat, lng]).addTo(map).bindPopup({maxWidth: 250, minWidth: 100, autoClose: false, closeOnClick: false, className: "running-popup"}).setPopupContent('Workout').openPopup();
         form.classList.remove('hidden');
+        inputDistance.focus();
+        mapEvent = mapE;
     });
     },
     function () {
@@ -126,3 +130,19 @@ if (navigator.geolocation) {
     }
   );
 }
+
+form.addEventListener('submit', function(e){
+    e.preventDefault();//prevent page reloading just after rendering the marker when the form is submitted.
+    
+    //Clear input fields.
+    inputDistance.value = inputDuration.value = inputElevation.value = inputCadence.value = '';
+    
+    //Display the marker.
+    console.log(mapEvent); //Returns the event object.
+    const { lat, lng } = mapEvent.latlng; //latitude and longitude valuess are inside the latlng child obj.
+    //adding a marker.
+    //.marker([lat, lng], {<option-object-properties})
+    //.bindPopup({option-object-properties})
+    //.setPopupContent(<string|HTMLElement>)
+    L.marker([lat, lng]).addTo(map).bindPopup({maxWidth: 250, minWidth: 100, autoClose: false, closeOnClick: false, className: "running-popup"}).setPopupContent('Workout').openPopup();
+});
