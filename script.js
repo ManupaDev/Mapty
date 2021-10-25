@@ -89,6 +89,7 @@ if (navigator.geolocation) {
   );
 }*/
 
+/* Final prototype before restructuring
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
     function (position) {
@@ -106,20 +107,8 @@ if (navigator.geolocation) {
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
 
-      /*L.marker(ourcoords)
-        .addTo(map)
-        .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-        .openPopup();*/
 
       map.on('click', function (mapE) {//Handling clicks on map.
-        //console.log(mapEvent); //Returns the event object.
-        //const { lat, lng } = mapEvent.latlng; //latitude and longitude valuess are inside the latlng child obj.
-
-        //adding a marker.
-        //.marker([lat, lng], {<option-object-properties})
-        //.bindPopup({option-object-properties})
-        //.setPopupContent(<string|HTMLElement>)
-        //L.marker([lat, lng]).addTo(map).bindPopup({maxWidth: 250, minWidth: 100, autoClose: false, closeOnClick: false, className: "running-popup"}).setPopupContent('Workout').openPopup();
         form.classList.remove('hidden');
         inputDistance.focus();
         mapEvent = mapE;
@@ -141,13 +130,10 @@ form.addEventListener('submit', function(e){
     console.log(mapEvent); //Returns the event object.
     const { lat, lng } = mapEvent.latlng; //latitude and longitude valuess are inside the latlng child obj.
     //adding a marker.
-    //.marker([lat, lng], {<option-object-properties})
-    //.bindPopup({option-object-properties})
-    //.setPopupContent(<string|HTMLElement>)
     L.marker([lat, lng]).addTo(map).bindPopup({maxWidth: 250, minWidth: 100, autoClose: false, closeOnClick: false, className: "running-popup"}).setPopupContent('Workout').openPopup();
 });
 
-inputType.addEventListener('change', function(){
+inputType.addEventListener('change', function() {
     inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
     inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
-});
+});*/
