@@ -10,17 +10,20 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
-let map;
-let mapEvent;
+// let map;
+// let mapEvent;
 
 class App {
+  #map;
+  #mapEvent;
+    
   constructor() {
     this._getPosition();
   }
 
   _getPosition() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this._loadMap, function () {
+      navigator.geolocation.getCurrentPosition(this._loadMap.bind(this), function () { //the "this" keyword in bind refers to the current instance, first this keyword is undefined as it's treated as a normal function call.
         alert('Could not get your location!');
       });
     }
@@ -34,18 +37,18 @@ class App {
     console.log(`https://www.google.pt/maps/@${latitude},${longitude}`);
 
     const ourcoords = [latitude, longitude];
-    map = L.map('map').setView(ourcoords, 13); //setView(focused-coordinate, zoomlevel)
+    this.#map = L.map('map').setView(ourcoords, 13); //setView(focused-coordinate, zoomlevel)
     //L is a global valiable inside the leaflet library, so we can access it.
     L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
+    }).addTo(this.#map);
 
-    map.on('click', function (mapE) {
+    this.#map.on('click', function (mapE) {
       //Handling clicks on map.
+      this.#mapEvent = mapE;
       form.classList.remove('hidden');
       inputDistance.focus();
-      mapEvent = mapE;
     });
 
     // L.marker(ourcoords)
@@ -62,7 +65,6 @@ class App {
 }
 
 const app = new App();
-
 
 /* Basic Map Display at current location setup
 if (navigator.geolocation) {
