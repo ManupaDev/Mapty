@@ -175,7 +175,7 @@ class App {
     this._renderWorkoutMarker(workout);
 
     //Render workout on sidebar list.
-    
+    this._renderWorkout(workout);
 
     //hide form + clear input fields.
     inputDistance.value = inputDuration.value = inputElevation.value = inputCadence.value = '';
