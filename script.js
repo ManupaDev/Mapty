@@ -60,6 +60,7 @@ class Cycling extends Workout {
 class App {
   #map;
   #mapEvent;
+  #workouts = [];
 
   constructor() {
     this._getPosition();
@@ -117,7 +118,52 @@ class App {
   }
 
   _newWorkout(e) {
+    const validInputs = (...inputs) => inputs.every(inp => Number.isFinite(inp));
+    const allPositive = (...inputs) => inputs.every(inp => inp > 0);
+
     e.preventDefault(); //prevent page reloading just after rendering the marker when the form is submitted.
+    
+    //Get data from the form.
+    const type = inputType.value;
+    const distance = +inputDistance.value;
+    const duration = +inputDuration.value;
+    const { lat, lng } = this.#mapEvent.latlng; //latitude and longitude valuess are inside the latlng child obj.
+    let workout;
+
+    //If workout is running => create a running object.
+    if (type === 'running') {
+        const cadence = +inputCadence.value;
+        //Check if data is valid.
+        if (!validInputs(distance, duration, cadence) || !allPositive(distance, duration, cadence)) {
+            return alert('Please enter valid inputs.');
+        }
+
+        workout = new Running([lat, lng], distance, duration, cadence);
+        
+    }
+
+    //If workout is cycling  => create a cycling object.
+    if (type === 'cycling') {
+        const elevation = +inputElevation.value;
+        //Check if data is valid.
+        if (!validInputs(distance, duration, elevation) || !allPositive(distance, duration)) {
+            return alert('Please enter valid inputs.');
+        }
+
+        workout = new Cycling([lat, lng], distance, duration, elevation);
+        
+    }
+
+    //add the new object to the workout array.
+    this.#workouts.push(workout);
+
+    //Render workout on map as a marker.
+
+    //Render workout on sidebar list.
+
+    //hide form + clear input fields.
+    
+
 
     //Clear input fields.
     inputDistance.value =
@@ -128,7 +174,7 @@ class App {
 
     //Display the marker.
     console.log(this.#mapEvent); //Returns the event object.
-    const { lat, lng } = this.#mapEvent.latlng; //latitude and longitude valuess are inside the latlng child obj.
+    
     //adding a marker.
     L.marker([lat, lng])
       .addTo(this.#map)
