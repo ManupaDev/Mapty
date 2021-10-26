@@ -186,7 +186,7 @@ class App {
         closeOnClick: false,
         className: `${workout.type}-popup`,
       })
-      .setPopupContent(`Workout for ${workout.distance}`)
+      .setPopupContent(`${workout.type} Workout for ${workout.distance}`)
       .openPopup();
   }
 }
