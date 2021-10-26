@@ -12,6 +12,8 @@ const inputElevation = document.querySelector('.form__input--elevation');
 class Workout {
   date = new Date();
   id = (Date.now() + '').slice(-10); //Date.now() is used to create a unique id.
+  clicks = 0;
+
 
   constructor(coords, distance, duration) {
     this.coords = coords; //[lat, lon]
@@ -23,6 +25,10 @@ class Workout {
     // prettier-ignore
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDate()}`;
+  }
+
+  click() {
+      this.clicks++;
   }
 }
 
@@ -77,6 +83,7 @@ class App {
     this._getPosition();
     form.addEventListener('submit', this._newWorkout.bind(this)); //point the  "this" to app object.
     inputType.addEventListener('change', this._toggleElevationField);
+    containerWorkouts.addEventListener('click', this._moveToPopup.bind(this))
   }
 
   _getPosition() {
@@ -249,6 +256,25 @@ class App {
     }
     form.insertAdjacentHTML('afterend', html);
   }
+
+  _moveToPopup(e) {
+    const woukoutEl = e.target.closest('.workout');
+    
+    if(!workoutEl) { 
+        return
+    }
+
+    const Idworkout = this.#workouts.find(work => work.id === workoutEl.dataset.id);
+    console.log(Idworkout);
+    
+    this.#map.setView(Idworkout.coords, 13, {
+        animate: true,
+        pan = {duration: 1},
+    });
+    
+    Idworkout.click();
+
+}
 }
 
 const app = new App();
