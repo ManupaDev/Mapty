@@ -80,7 +80,13 @@ class App {
   #workouts = [];
 
   constructor() {
+    //get user's position.  
     this._getPosition();
+
+    //get data from local localStorage.
+    this.getLocalStorage();
+
+    //attach eventHandlers.
     form.addEventListener('submit', this._newWorkout.bind(this)); //point the  "this" to app object.
     inputType.addEventListener('change', this._toggleElevationField);
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this))
@@ -114,6 +120,11 @@ class App {
     }).addTo(this.#map);
 
     this.#map.on('click', this._showForm.bind(this));
+
+    //workout markers have to be rendered after the map has been loaded
+    this.workouts.forEach(work => {
+        this._renderWorkoutMarker(work);
+    });
 
     // L.marker(ourcoords)
     //   .addTo(map)
@@ -193,6 +204,9 @@ class App {
 
     //hide form + clear input fields.
     this._hideForm();
+
+    //set local storage to all workouts.
+    this._setLocalStorage();
   }
 
   _renderWorkoutMarker(workout) {
@@ -272,9 +286,34 @@ class App {
         pan = {duration: 1},
     });
     
-    Idworkout.click();
+    // Idworkout.click();
+  }
+  
+  _setLocalStorage() {
+    localStorage.setItem('workouts', JSON.stringify(this.#workouts)); //localStorage is a key value pair so 'workouts' is the key. and other argument is the value.
+  }
 
-}
+  _getLocalStorage() {
+    const data =  JSON.parse(localStorage.getItem('workouts'));
+    console.log(data); 
+    //Note that when an object is converted to a string and again converted back to an object, the object loses it's prototype chain.
+
+    if (!data) { //guard clause to protect against empty data.
+        return
+    }
+
+    this.#workouts = data;
+    this.workouts.forEach(work => {
+        this._renderWorkout(work);
+    });
+  }
+
+  reset() {
+    localStorage.removeItem('workouts'); //clears the local storage.
+    location.reload(); //reloads the page
+  }
+
+
 }
 
 const app = new App();
