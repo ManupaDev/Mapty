@@ -184,7 +184,7 @@ class App {
         closeOnClick: false,
         className: 'workout--running',
       })
-      .setPopupContent('Workout')
+      .setPopupContent('CuteWorkout')
       .openPopup();
   }
 }
